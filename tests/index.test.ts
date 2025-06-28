@@ -1,13 +1,13 @@
 import { describe, it, expect } from '@jest/globals';
-import { VoicevoxClient } from '../src/voicevox-client';
+import { AivisSpeechClient } from '../src/aivisspeech-client';
 
-describe('VoicevoxMCPServer', () => {
-  it('should import VoicevoxClient successfully', () => {
-    expect(VoicevoxClient).toBeDefined();
+describe('AivisSpeechMCPServer', () => {
+  it('should import AivisSpeechClient successfully', () => {
+    expect(AivisSpeechClient).toBeDefined();
   });
 
   it('should have correct endpoint configuration', () => {
-    const client = new VoicevoxClient('http://localhost:50021');
-    expect(client).toBeInstanceOf(VoicevoxClient);
+    const client = new AivisSpeechClient('http://localhost:10101');
+    expect(client).toBeInstanceOf(AivisSpeechClient);
   });
 });

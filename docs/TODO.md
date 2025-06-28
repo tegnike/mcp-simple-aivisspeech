@@ -1,4 +1,4 @@
-# MCP-VOICEVOX MVP TODO
+# MCP-AIVISSPEECH MVP TODO
 
 ## 完了すべきタスク
 
@@ -25,9 +25,9 @@
 ### ✅ 完了
 
 - [x] プロジェクト初期設定
-- [x] 仕様書作成 (docs/specification.md)
+- [x] 仕様書作成 (docs/specification.md) - AIVISSPEECH用に更新済み
 - [x] TODO管理ファイル作成 (このファイル)
-- [x] CLAUDE.md更新
+- [x] CLAUDE.md更新 - AIVISSPEECH用に更新済み
 
 #### 1. プロジェクトセットアップ
 
@@ -45,17 +45,18 @@
 - [x] `speak` ツールの定義とスキーマ作成
 - [x] エラーハンドリングの実装
 
-#### 3. VOICEVOX連携
+#### 3. AIVISSPEECH連携
 
-- [x] VOICEVOX API クライアントの実装
+- [x] AIVISSPEECH API クライアントの実装
 - [x] 話者一覧取得機能の実装
 - [x] 音声合成API呼び出し機能の実装
 - [x] 音声再生機能の実装
+- [x] intonationScaleパラメータの対応
 
 #### 4. speak機能の実装
 
-- [x] パラメータバリデーション (text, speaker)
-- [x] VOICEVOX APIとの連携処理
+- [x] パラメータバリデーション (text, speaker, speedScale, intonationScale)
+- [x] AIVISSPEECH APIとの連携処理
 - [x] レスポンス形式の実装
 - [x] エラーハンドリングとメッセージ
 
@@ -72,5 +73,5 @@
 ## 次のステップ
 
 1. `package.json` を作成してプロジェクトセットアップを開始
-2. MCP SDKの基本実装を行う
-3. VOICEVOX APIとの連携テストを実施
+2. MCP SDKの基本実装を行う - 完了
+3. AIVISSPEECH APIとの連携テストを実施 - 完了

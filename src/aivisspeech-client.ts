@@ -4,9 +4,10 @@ export interface SpeakOptions {
   text: string;
   speaker: number;
   speedScale?: number;
+  intonationScale?: number;
 }
 
-export class VoicevoxClient {
+export class AivisSpeechClient {
   private client: AxiosInstance;
 
   constructor(private endpoint: string) {
@@ -19,7 +20,8 @@ export class VoicevoxClient {
   async speak(
     text: string,
     speaker: number,
-    speedScale?: number
+    speedScale?: number,
+    intonationScale?: number
   ): Promise<void> {
     try {
       // 音声クエリの作成
@@ -35,6 +37,11 @@ export class VoicevoxClient {
       // 速度スケールが指定されている場合は設定
       if (speedScale !== undefined) {
         audioQuery.speedScale = speedScale;
+      }
+
+      // 感情表現の強さが指定されている場合は設定
+      if (intonationScale !== undefined) {
+        audioQuery.intonationScale = intonationScale;
       }
 
       // 音声合成
@@ -55,11 +62,11 @@ export class VoicevoxClient {
       if (axios.isAxiosError(error)) {
         if (error.code === 'ECONNREFUSED') {
           throw new Error(
-            'VOICEVOXエンジンに接続できません。VOICEVOXが起動しているか確認してください。'
+            'AIVISSPEECHエンジンに接続できません。AIVISSPEECHが起動しているか確認してください。'
           );
         }
         throw new Error(
-          `VOICEVOX APIエラー: ${error.response?.status} ${error.response?.statusText}`
+          `AIVISSPEECH APIエラー: ${error.response?.status} ${error.response?.statusText}`
         );
       }
       throw error;
@@ -73,7 +80,10 @@ export class VoicevoxClient {
     const os = await import('os');
 
     return new Promise((resolve, reject) => {
-      const tempFilePath = path.join(os.tmpdir(), `voicevox_${Date.now()}.wav`);
+      const tempFilePath = path.join(
+        os.tmpdir(),
+        `aivisspeech_${Date.now()}.wav`
+      );
 
       // 音声データを一時ファイルに保存
       fs.writeFileSync(tempFilePath, Buffer.from(audioData));
@@ -145,11 +155,11 @@ export class VoicevoxClient {
       if (axios.isAxiosError(error)) {
         if (error.code === 'ECONNREFUSED') {
           throw new Error(
-            'VOICEVOXエンジンに接続できません。VOICEVOXが起動しているか確認してください。'
+            'AIVISSPEECHエンジンに接続できません。AIVISSPEECHが起動しているか確認してください。'
           );
         }
         throw new Error(
-          `VOICEVOX APIエラー: ${error.response?.status} ${error.response?.statusText}`
+          `AIVISSPEECH APIエラー: ${error.response?.status} ${error.response?.statusText}`
         );
       }
       throw error;

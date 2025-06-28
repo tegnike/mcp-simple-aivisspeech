@@ -1,17 +1,17 @@
 import { describe, it, expect, beforeEach } from '@jest/globals';
-import { VoicevoxClient } from '../src/voicevox-client';
+import { AivisSpeechClient } from '../src/aivisspeech-client';
 
-describe('VoicevoxClient', () => {
-  let client: VoicevoxClient;
-  const mockEndpoint = 'http://localhost:50021';
+describe('AivisSpeechClient', () => {
+  let client: AivisSpeechClient;
+  const mockEndpoint = 'http://localhost:10101';
 
   beforeEach(() => {
-    client = new VoicevoxClient(mockEndpoint);
+    client = new AivisSpeechClient(mockEndpoint);
   });
 
   describe('constructor', () => {
     it('should create instance with correct endpoint', () => {
-      expect(client).toBeInstanceOf(VoicevoxClient);
+      expect(client).toBeInstanceOf(AivisSpeechClient);
     });
   });
 

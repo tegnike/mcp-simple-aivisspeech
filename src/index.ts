@@ -6,18 +6,18 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { VoicevoxClient } from './voicevox-client.js';
+import { AivisSpeechClient } from './aivisspeech-client.js';
 
-const VOICEVOX_ENDPOINT = 'http://localhost:50021';
+const AIVISSPEECH_ENDPOINT = 'http://localhost:10101';
 
-class VoicevoxMCPServer {
+class AivisSpeechMCPServer {
   private server: Server;
-  private voicevoxClient: VoicevoxClient;
+  private aivisspeechClient: AivisSpeechClient;
 
   constructor() {
     this.server = new Server(
       {
-        name: 'mcp-voicevox',
+        name: 'mcp-aivisspeech',
         version: '0.1.0',
       },
       {
@@ -27,7 +27,7 @@ class VoicevoxMCPServer {
       }
     );
 
-    this.voicevoxClient = new VoicevoxClient(VOICEVOX_ENDPOINT);
+    this.aivisspeechClient = new AivisSpeechClient(AIVISSPEECH_ENDPOINT);
     this.setupHandlers();
   }
 
@@ -37,7 +37,7 @@ class VoicevoxMCPServer {
         tools: [
           {
             name: 'speak',
-            description: 'VOICEVOXを使用してテキストを読み上げます',
+            description: 'AIVISSPEECHを使用してテキストを読み上げます',
             inputSchema: {
               type: 'object',
               properties: {
@@ -47,12 +47,18 @@ class VoicevoxMCPServer {
                 },
                 speaker: {
                   type: 'number',
-                  description: '話者ID（VOICEVOXの話者番号）',
+                  description: '話者ID（AIVISSPEECHのスタイルID）',
                 },
                 speedScale: {
                   type: 'number',
                   description: '読み上げ速度のスケール（デフォルト1.0）',
                   minimum: 0.5,
+                  maximum: 2.0,
+                },
+                intonationScale: {
+                  type: 'number',
+                  description: '感情表現の強さ（デフォルト1.0）',
+                  minimum: 0.0,
                   maximum: 2.0,
                 },
               },
@@ -66,13 +72,20 @@ class VoicevoxMCPServer {
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (request.params.name === 'speak') {
         try {
-          const { text, speaker, speedScale } = request.params.arguments as {
+          const { text, speaker, speedScale, intonationScale } = request.params
+            .arguments as {
             text: string;
             speaker: number;
             speedScale?: number;
+            intonationScale?: number;
           };
 
-          await this.voicevoxClient.speak(text, speaker, speedScale);
+          await this.aivisspeechClient.speak(
+            text,
+            speaker,
+            speedScale,
+            intonationScale
+          );
 
           return {
             content: [
@@ -104,7 +117,7 @@ class VoicevoxMCPServer {
   async run() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.error('MCP VOICEVOX Server running on stdio');
+    console.error('MCP AIVISSPEECH Server running on stdio');
 
     // プロセス終了時の処理
     process.on('SIGINT', () => {
@@ -120,7 +133,7 @@ class VoicevoxMCPServer {
 }
 
 async function main() {
-  const server = new VoicevoxMCPServer();
+  const server = new AivisSpeechMCPServer();
   await server.run();
 }
 
