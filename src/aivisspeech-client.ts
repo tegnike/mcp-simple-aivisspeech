@@ -98,7 +98,7 @@ export class AivisSpeechClient {
           args = [tempFilePath];
           break;
         case 'linux':
-          command = 'aplay';
+          command = 'paplay';
           args = [tempFilePath];
           break;
         case 'win32': // Windows
