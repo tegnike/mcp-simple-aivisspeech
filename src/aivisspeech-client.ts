@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { spawnSync } from 'child_process';
 
 export interface SpeakOptions {
   text: string;
@@ -97,10 +98,23 @@ export class AivisSpeechClient {
           command = 'afplay';
           args = [tempFilePath];
           break;
-        case 'linux':
-          command = 'aplay';
+        case 'linux': {
+          const chooseCmd = () => {
+            // WSL環境で再生するにはpaplayコマンドを使用する必要があるため、paplayを優先。なければaplayを使用
+            if (spawnSync('which', ['paplay']).status === 0) {
+              return 'paplay';
+            }
+            if (spawnSync('which', ['aplay']).status === 0) {
+              return 'aplay';
+            }
+            throw new Error(
+              '音声再生コマンド(paplay または aplay)が見つかりません'
+            );
+          };
+          command = chooseCmd();
           args = [tempFilePath];
           break;
+        }
         case 'win32': // Windows
           command = 'powershell';
           args = [
